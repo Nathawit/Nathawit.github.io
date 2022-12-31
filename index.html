@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Transfusion_Demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <div class="content">
+          <h1>Transfusion Reaction Assessment</h1>
+          <p>
+            This is our Demo for clinician or medtech in transfusion clinic
+          </p>
+        </div>
+
+        <div class="columns">
+          <div class="column is-three-quarters">
+            <div class="card">
+              <div class="card-content">
+                <form id="loan-form">
+				<p>
+				Please input General information
+				</p>
+				<div class="level">
+				<input class="input is-primary" type="text" placeholder="Patient Name">
+				</div>
+					
+					<div class="level">
+					<!-- Left side -->
+                    <div class="level-left is-marginless">
+						<div class="level-item">
+                        <p>Hospital</p>
+						</div>
+						<div class="level-item">
+						<div class="select">
+							<select>
+							<option>KCMH</option>
+							<option>SIRIRAJ</option>
+							<option>RAMA</option>
+							</select>
+						</div>
+						</div>
+						
+						<div class="level-item">
+                        Blood Group
+						</div>
+						<div class="level-item">
+							<div class="select">
+							<select>
+							<option>A</option>
+							<option>B</option>
+							<option>AB</option>
+							<option>O</option>
+							</select>
+							</div>
+						</div>
+					</div>
+					</div>
+					
+					<div class="level">
+						<div class="level-left is-marginless">
+							<div class="level-item">
+							<p>Transfusion Date</p>
+							</div>
+
+							<div class="level-item">
+							<input class="input is-primary" type="date" placeholder="Transfusion Date" >
+							</div>
+							
+							<div class="level-item">
+							<input class="input is-primary" type="time" placeholder="Transfusion Time" >
+							</div>
+							
+						</div>
+					</div>
+					
+
+					<div class="level">
+					
+						<p> What is patient's problem ? </p>
+						
+					</div>
+					<div class="level">	
+						<div class="select is-multiple">
+							<select multiple size="5" id ="Chief">
+								<option value="Dyspnea">Dyspnea</option>
+								<option value="Fever">Fever</option>
+								<option value="Hypotension">Hypotension</option>
+								<option value="Rash">Rash</option>
+								<option value="Chills">Chills</option>
+							</select>
+						</div>
+					
+					</div>
+				  
+
+                  <div class="control">
+                    <button
+                      class="button is-large is-fullwidth is-primary is-outlined"
+                    >
+                      Approach
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+	<div id="page_Fever" style="display: none;">
+      <div class="container">
+        <div class="content">
+          <h1>Patient with Fever/Chills</h1>
+          <p>
+            Because of Fever, Patient's possible disease include: FNHTR, AHTR, Sepsis
+          </p>
+        </div>
+
+        <div class="columns">
+          <div class="column is-three-quarters">
+            <div class="card">
+              <div class="card-content">
+                <form id="Fever">
+					
+					<div class="level">
+                    <!-- Left side -->
+                    <div class="level-left is-marginless">
+                      <div class="level-item">
+                        <p class="number">1</p>
+                        Duration after transfusion (Hr)
+                      </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="level-right">
+                      <div class="level-item">
+                        <div class="field">
+                          <div class="control">
+                            <input class="input" id="amount" type="number" />
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+				  
+				  <div class="level">
+                    
+					<!-- Left side -->
+                    <div class="level-left is-marginless">
+                      <div class="level-item">
+                        <p class="number">2</p>
+                        Patient has BT > 38.0C or elevate > 1C ?
+                      </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="level-right">
+                      <div class="level-item">
+                        <div class="control">
+						<label class="radio">
+						<input type="radio" id = "radio1" name="Q1" value="yes">
+							Yes
+							</label>
+							<label class="radio">
+						<input type="radio" id = "radio2" name="Q1" value="no">
+							No
+							</label>
+						</div>
+                      </div>
+                    </div>
+                  </div>
+				  
+				  <div class="level">
+				  <!-- Left side -->
+                    <div class="level-left is-marginless">
+                      <div class="level-item">
+                        <p class="number">3</p>
+                        Patient has Back/Flank pain ?
+                      </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="level-right">
+                      <div class="level-item">
+                        <div class="control">
+						<label class="radio">
+						<input type="radio" id="radio3" name="AHTR2" value="yes">
+							Yes
+						</label>
+						<label class="radio">
+							<input type="radio" id="radio4" name="AHTR2" value="no">
+							No
+						</label>
+						</div>
+                      </div>
+                    </div>
+                  </div>
+				  
+				  <div class="level">
+				  <!-- Left side -->
+                    <div class="level-left is-marginless">
+                      <div class="level-item">
+                        <p class="number">4</p>
+                        Patient has BP drop ?
+                      </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="level-right">
+                      <div class="level-item">
+                        <div class="control">
+						<label class="radio">
+						<input type="radio" id="radio5" name="AHTR3" value="yes">
+							Yes
+						</label>
+						<label class="radio">
+							<input type="radio" id="radio6" name="AHTR3" value="no">
+							No
+						</label>
+						</div>
+                      </div>
+                    </div>
+                  </div>
+				
+					<div class="level">
+				  <!-- Left side -->
+                    <div class="level-left is-marginless">
+                      <div class="level-item">
+                        <p class="number">5</p>
+                        Patient has Oligouria/Anuria ?
+                      </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="level-right">
+                      <div class="level-item">
+                        <div class="control">
+						<label class="radio">
+						<input type="radio" id="radio7" name="AHTR4" value="yes">
+							Yes
+						</label>
+						<label class="radio">
+							<input type="radio" id="radio8" name="AHTR4" value="no">
+							No
+						</label>
+						</div>
+                      </div>
+                    </div>
+                  </div>
+				  
+					<div class="level">
+				  <!-- Left side -->
+                    <div class="level-left is-marginless">
+                      <div class="level-item">
+                        <p class="number">6</p>
+                        Abnormal Lab : Fibrinogen, Haptoglobin, Bilirubin, LDH
+                      </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="level-right">
+                      <div class="level-item">
+                        <div class="control">
+						<label class="radio">
+						<input type="radio" id="radio9" name="AHTR_LAB" value="yes">
+							Yes
+						</label>
+						<label class="radio">
+							<input type="radio" id="radio10" name="AHTR_LAB" value="no">
+							No
+						</label>
+						</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="control">
+                    <button
+                      class="button is-large is-fullwidth is-primary is-outlined"
+                    >
+                      Calculate
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+	</div>
+    
+	
+	    
+	<div id="page_Rash" style="display: none;">
+      <div class="container">
+        <div class="content">
+          <h1>Patient with Rash/Hypotension</h1>
+          <p>
+            Because of Rash/Hypotension , Patient's possible disease include: Allergic reaction, Anaphylaxis 
+          </p>
+        </div>
+
+        <div class="columns">
+          <div class="column is-three-quarters">
+            <div class="card">
+              <div class="card-content">
+                <form id="Rash">
+					
+					<div class="level">
+                    <!-- Left side -->
+                    <div class="level-left is-marginless">
+                      <div class="level-item">
+                        <p class="number">1</p>
+                        Duration after transfusion (Hr)
+                      </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="level-right">
+                      <div class="level-item">
+                        <div class="field">
+                          <div class="control">
+                            <input class="input" id="amount" type="number" />
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+				  
+				  <div class="level">
+                    
+					<!-- Left side -->
+                    <div class="level-left is-marginless">
+                      <div class="level-item">
+                        <p class="number">2</p>
+                        Edema of conjunctiva, lips, toungue, uvula
+                      </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="level-right">
+                      <div class="level-item">
+                        <div class="control">
+						<label class="radio">
+						<input type="radio" id = "radio1" name="Allergy1" value="yes">
+							Yes
+							</label>
+							<label class="radio">
+						<input type="radio" id = "radio2" name="Allergy1" value="no">
+							No
+							</label>
+						</div>
+                      </div>
+                    </div>
+                  </div>
+				  
+				  <div class="level">
+				  <!-- Left side -->
+                    <div class="level-left is-marginless">
+                      <div class="level-item">
+                        <p class="number">3</p>
+                        Patient has Flushing ?
+                      </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="level-right">
+                      <div class="level-item">
+                        <div class="control">
+						<label class="radio">
+						<input type="radio" id="radio3" name="Allergy12" value="yes">
+							Yes
+						</label>
+						<label class="radio">
+							<input type="radio" id="radio4" name="Allergy12" value="no">
+							No
+						</label>
+						</div>
+                      </div>
+                    </div>
+                  </div>
+				  
+				  <div class="level">
+				  <!-- Left side -->
+                    <div class="level-left is-marginless">
+                      <div class="level-item">
+                        <p class="number">4</p>
+                        Urticaria ?
+                      </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="level-right">
+                      <div class="level-item">
+                        <div class="control">
+						<label class="radio">
+						<input type="radio" id="radio5" name="Allergy13" value="yes">
+							Yes
+						</label>
+						<label class="radio">
+							<input type="radio" id="radio6" name="Allergy13" value="no">
+							No
+						</label>
+						</div>
+                      </div>
+                    </div>
+                  </div>
+				
+					<div class="level">
+				  <!-- Left side -->
+                    <div class="level-left is-marginless">
+                      <div class="level-item">
+                        <p class="number">5</p>
+                        Respiratory distress ?
+                      </div>
+                    </div>
+
+                    <!-- Right side -->
+                    <div class="level-right">
+                      <div class="level-item">
+                        <div class="control">
+						<label class="radio">
+						<input type="radio" id="radio7" name="Allergy14" value="yes">
+							Yes
+						</label>
+						<label class="radio">
+							<input type="radio" id="radio8" name="Allergy14" value="no">
+							No
+						</label>
+						</div>
+                      </div>
+                    </div>
+                  </div>
+				  
+					
+                  <div class="control">
+                    <button
+                      class="button is-large is-fullwidth is-primary is-outlined"
+                    >
+                      Calculate
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+	</div>
+    </section>
+	
+    <!-- RESULTS -->
+    <section class="section">
+	<div id="page_result" style="display: none;">
+	<div class="container">
+      <h1 class="title ">Calculated Results</h1>
+		<div class="columns is-multiline">
+	
+			<div class="column is-12-tablet is-6-desktop is-9-widescreen">
+			<div class="notification is-primary has-text">
+				<p id="monthlyPayment" class="title is-1"></p>
+				<p class="subtitle is-4">Mostlikely Diagnosis</p>
+			</div>
+			</div>
+
+			<div class="column is-12-tablet is-6-desktop is-3-widescreen">
+			
+			<div class="notification is-info has-text">
+				<p id="totalInterest" class="title is-1"></p>
+				<p class="subtitle is-4">Criteria</p>
+			</div>
+			</div>
+
+			<div class="column is-12-tablet is-6-desktop is-12-widescreen">
+			<div class="notification is-link has-text">
+				<p id="totalPayment" class="title is-1"></p>
+				<p class="subtitle is-4">Suggestion</p>
+			</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+</section>
+
+
+
+  </body>
+
+  <script src="app.js"></script>
+</html>
