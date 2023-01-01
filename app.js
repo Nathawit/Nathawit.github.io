@@ -66,7 +66,7 @@ function Approach(e) {
 
 function Fever(e) {
 
-	const Duration = document.querySelector('input[name="Duration"]'); 
+	const Duration = document.querySelector('input[name="Duration"]').value; 
     var AHTR = document.querySelectorAll('input[name^="AHTR"]');
 	
     // Initialize a count to 0
