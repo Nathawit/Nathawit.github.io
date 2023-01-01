@@ -66,7 +66,7 @@ function Approach(e) {
 
 function Fever(e) {
 
-
+	const Duration = document.querySelector('input[name="Duration"]'); 
     var AHTR = document.querySelectorAll('input[name^="AHTR"]');
 	
     // Initialize a count to 0
@@ -86,7 +86,7 @@ function Fever(e) {
 		const AHTRL = document.querySelector('input[name="AHTR_LAB"][value="yes"]');
 		
 		if (AHTRL.checked){
-			document.getElementById("monthlyPayment").innerHTML = "Definite AHTR";
+			document.getElementById("monthlyPayment").innerHTML = "Definite AHTR"+Duration;
 		}
 		else{
 			document.getElementById("monthlyPayment").innerHTML = "Probable AHTR";
