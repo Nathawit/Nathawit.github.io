@@ -27,12 +27,10 @@
 
 	<form id="MyForm" onsubmit="addData()">
 
-	First name
-	<input type="text" id="fname" name="fname" placeholder="First name">
-	Last name
-	<input type="text" id="lname" name="lname" placeholder="Last name">
-	Transfusion Datetime
-	<input type="datetime-local" id="transdate" name="transdate">
+	Patient First name
+	<input type="text" id="fname" name="fname" placeholder="First name" required >
+	Patient Last name
+	<input type="text" id="lname" name="lname" placeholder="Last name" required >
 	Hospital
 	<select name="Hospital" id="Hospital">
 		<option value="KCMH">KCMH</option>
@@ -47,18 +45,25 @@
 		<option value="O">O</option>
 		<option value="AB">AB</option>
 	</select>
-	<p>Onset of Symptoms after transfusion (hr), fill 0 if les than 1 hr</p>
-	<input type="number" id="Duration" name="Duration"><br>
+	Transfusion Datetime
+	<input type="datetime-local" id="Transdate" name="Transdate" required >
+	Onset of Symptoms
+	<input id="Onset" name="Onset" type="datetime-local" required><br>
 	Patient Symptoms
 	<fieldset>
 		<label><input type="checkbox" id="Fever" name="Fever">Fever</label>
 		<label><input type="checkbox" id="Dyspnea" name="Dyspnea">Dyspnea</label>
+		<label id="lbSatDrop" style="display:none;">&emsp;&emsp;
+			SpO2 lower than 90%
+			<input type="radio" id="SatDropy" name="SatDrop" value="yes">yes
+			<input type="radio" id="SatDropn" name="SatDrop" value="no">no</label>
 		<label><input type="checkbox" id="Rash" name="Rash">Rash</label>
 		<label><input type="checkbox" id="Hypotension" name="Hypotension">Hypotension</label>
 		<label id="lbRecov" style="display:none;">&emsp;&emsp;
-			<input type="checkbox" id="Recov" name="Recov">Elevate BP after cessation</label>
-		<label id="lbSatDrop" style="display:none;">&emsp;&emsp;
-			<input type="checkbox" id="SatDrop" name="SatDrop">SpO2 lower than 90%</label>
+			Elevate BP after cessation and IV fluid
+			<input type="radio" id="Recovy" name="Recov" value="yes">yes
+			<input type="radio" id="Recovn" name="Recov" value="no">no</label>
+		
 	</fieldset>
 	<button type="button" id="Approach">Approach</button>
 
@@ -70,7 +75,11 @@
 			<label><input type="checkbox" id="Hypo_Skin4" name="Hypo_Skin4">Angioedema</label>
 			<label><input type="checkbox" id="Hypo_Skin5" name="Hypo_Skin5">Urticaria</label>
 			<label><input type="checkbox" id="Hypo_Skin6" name="Hypo_Skin6">Bronchospasm</label>
+			<label><input type="checkbox" id="Hypo_None" name="Hypo_None">None of Above</label>
 		</fieldset>
+		Evidence of Environment,Drug,Dietary
+		<input type="radio" id="Other_Skiny" name="Other_Skin">yes
+		<input type="radio" id="Other_Skinn" name="Other_Skin">no
 		
 		<button type="button" id="CalculateHypo">Calculate Hypotension</button>
 	</div>
@@ -87,6 +96,7 @@
 			<label><input type="checkbox" id="Fever_AHTR4" name="Fever_AHTR4">Elevated LDH</label>
 			<label><input type="checkbox" id="Fever_AHTR5" name="Fever_AHTR5">Decrease Fibrinogen</label>
 			<label><input type="checkbox" id="Fever_AHTR6" name="Fever_AHTR6">Decrease Haptoglobin</label>
+			<label><input type="checkbox" id="Fever_None" name="Fever_None">None of Above</label>
 		</fieldset>
 			<table id="lbFever_NAHTR" style="display:none;"><tr>
 				<td>&emsp;Evidence of Thermal,Chemical,Mechanical</td>
@@ -109,49 +119,28 @@
 		<button type="button" id="CalculateFever">Calculate</button>
 	</div>
 		
-	<div id="page_Rash" style="display:none;">
-		<h2>Rash</h2>
-		<p>Because of Rash/Hypotension, atient's possible disease include: Allergic reaction, Anaphylaxis.<br><br></p>
-		
-		<table>
-		<tr> <td></td> <td>Yes</td> <td>No</td>
-		</tr><tr>
-		<td>1. Edema of conjunctiva, lips, toungue, uvula</td>
-			<td><input type="radio" id="Rash_Q1y" name="Allergic_Q1" value="yes"></td>
-			<td><input type="radio" id="Rash_Q1n" name="Allergic_Q1" value="no"></td>
-		</tr><tr>
-		<td>2. Flushing</td>
-			<td><input type="radio" id="Rash_Q2y" name="Allergic_Q2y" value="yes"></td>
-			<td><input type="radio" id="Rash_Q2y" name="Allergic_Q2" value="no"></td>
-			</tr><tr>
-		<td>3. Urticaria</td>
-			<td><input type="radio" id="Rash_Qy" name="Allergic_Q3" value="yes"></td>
-			<td><input type="radio" id="Rash_Q3n" name="Allergic_Q3" value="no"></td>
-			</tr><tr>
-		<td>4. Respiratory distress, Wheezing</td>
-			<td><input type="radio" id="Rash_Q4y" name="Allergic_Q4" value="yes"></td>
-			<td><input type="radio" id="Rash_Q4n" name="Allergic_Q4" value="no"></td>
-		</tr></table>
-		<p><br></p>
-		<button type="button" id="CalculateRash">Calculate</button>
+	<div id="page_HTR"  style="display:none;">
+	Other possible could explain hypotension: xxxx
+	<input type="radio" id="Other_HTRy" name="Other_HTR" value="yes">yes
+	<input type="radio" id="Other_HTRn" name="Other_HTR" value="no">no
+	<button type="button" id="CalculateHTR">Calculate</button>
 	</div>
-		
+
 	<div id="page_Dyspnea" style="display:none;">
 			<h1>Dyspnea</h1>
 			<p>Because of Dyspnea, Patient's possible disease include: TACO, TRALI, TAD.<br><br></p>
 			
-		<table>
-		<tr> <td></td> <td>Yes</td> <td></td>
-			</tr>
-			<tr><td>O2 sat lower than 90%</td>	<td><input type="checkbox" id="Dys_Q1" name="Dys_Q1"></td></tr>
-			<tr><td>Positive Fluid Balance > 1000 ml/day</td>	<td><input type="checkbox" id="Dys_Q2" name="Dys_Q2"></td></tr>
-			<tr><td>Abnormal Xray, Bilat infiltrate</td>	<td><input type="checkbox" id="Dys_Q3" name="Dys_Q3"></td></tr>
-			<tr><td>Elevate NT-proBNP</td>	<td><input type="checkbox" id="Dys_Q3" name="Dys_Q3"></td></tr>
-			<tr><td>Blood Pressure</td>
-			<td><input type="radio" id="Dys_BPh" name="Dys_BP">Higher</td>
-			<td><input type="radio" id="Dys_BPl" name="Dys_BP">Lower</td>
-			</tr>
-		</table>
+		<fieldset>
+			<label><input type="checkbox" id="Dys_Sat" name="Dys_Sat">O2 sat lower than 90%</label>
+			<label><input type="checkbox" id="Dys_Q2" name="Dys_Q2">Abnormal Xray, Bilat infiltrate</label>
+			<label><input type="checkbox" id="Dys_Q3" name="Dys_Q3">Positive Fluid Balance > 1000 ml/day</label>
+			<label><input type="checkbox" id="Dys_Q4" name="Dys_Q4">Elevate NT-proBNP</label>
+			<label><input type="checkbox" id="Dys_Q5" name="Dys_Q5">Elevate CVP</label>
+			<label><input type="checkbox" id="Dys_Q6" name="Dys_Q6">Lt.Heart Failure Symptoms</label>
+			Blood Pressure
+			<input type="radio" id="Dys_BPh" name="Dys_BP">Higher
+			<input type="radio" id="Dys_BPl" name="Dys_BP">Lower
+		</fieldset>
 		<p><br></p>
 		Severity
 		<fieldset>
