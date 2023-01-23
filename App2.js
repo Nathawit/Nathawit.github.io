@@ -1,56 +1,83 @@
 document.getElementById("Approach").addEventListener("click", Approach);
 document.getElementById("CalculateFever").addEventListener("click", CalculateFever);
-document.getElementById("CalculateRash").addEventListener("click", CalculateRash);
 document.getElementById("CalculateDyspnea").addEventListener("click", CalculateDyspnea);
 document.getElementById("CalculateHypo").addEventListener("click", CalculateHypo);
+document.getElementById("CalculateHTR").addEventListener("click", CalculateHTR);
 document.getElementById("Reset").addEventListener("click", PageReset);
 
 document.getElementById("Dyspnea").addEventListener("click", ShowSat);
 document.getElementById("Hypotension").addEventListener("click", ShowSat);
+document.getElementById("Fever").addEventListener("click", ShowSat);
 document.getElementById("Fever_NAHTRy").addEventListener("click", ShowDAT);
 document.getElementById("Fever_NAHTRn").addEventListener("click", ShowDAT);
 
+document.getElementById("Hypo_None").addEventListener("change", function(){DisableCheckbox(this,"Hypo_Skin")});
+document.getElementById("Fever_None").addEventListener("change", function(){DisableCheckbox(this,"Fever_AHTR")});
+
 document.getElementById("Hypotension").addEventListener("change", ShowHypo);
-document.getElementById("Recov").addEventListener("change", function(){if(Recov.checked){SatDrop.disabled = true;}else{SatDrop.disabled = false;}});
-document.getElementById("SatDrop").addEventListener("change", function(){if(SatDrop.checked){Recov.disabled = true;}else{Recov.disabled = false;}});
+document.getElementById("SatDropy").addEventListener("click", function(){Dys_Sat.checked = true; Dys_Sat.disabled= true;});
 
 var Diagnosis = ""
 var Confidence = ""
 var Severity = ""
 var Duration = 0
+var DDX = null
+
+document.getElementById("SatDropy").addEventListener("click", function(){Recovy.disabled = true;Recovn.disabled = true;});
+document.getElementById("SatDropn").addEventListener("click", function(){Recovy.disabled = false;Recovn.disabled = false;});
+document.getElementById("Recovy").addEventListener("click", function(){SatDropy.disabled = true;SatDropn.disabled = true;});
+document.getElementById("Recovn").addEventListener("click", function(){SatDropy.disabled = false;SatDropn.disabled = false;});
+
+function CalDuration(){
+	var date1 = new Date(document.getElementById("Transdate").value).getTime();
+	var date2 = new Date(document.getElementById("Onset").value).getTime();
+	var Duration = (date2 - date1)/(1000*60);
+	return Duration;
+}
 
 /************************ Approach *********************************/
 
 function Approach() {
 	PageReset();
-	Duration = document.getElementById("Duration").value;
+	Duration = CalDuration();
+	
+	if(isNaN(Duration)){
+      alert("Please fill the date and time field");
+    }
+	else{	
 	if(Dyspnea.checked && Hypotension.checked) {
-		if(SatDrop.checked) page_Dyspnea.style.display = 'block';
-		else page_Hypotension.style.display = 'block';
+		if(SatDropy.checked) page_Dyspnea.style.display = 'block';
+		else if(Recovy.checked){Diagnosis="HTR"}
+		else if(SatDropn.checked && Recovn.checked) page_Hypotension.style.display = 'block';
+		else alert("Please select an option.");
 	}
 	else if(Dyspnea.checked && Fever.checked) {
-		if(SatDrop.checked) page_Dyspnea.style.display = 'block';
-		else page_Fever.style.display = 'block';
+		if(SatDropy.checked) page_Dyspnea.style.display = 'block';
+		else if(SatDropn.checked) page_Fever.style.display = 'block';
+		else alert("Please select an option.");
 	}
 	else if(Dyspnea.checked) page_Dyspnea.style.display = 'block';
 	else if(Fever.checked) page_Fever.style.display = 'block';
+	else if(Recovy.checked) page_HTR.style.display='block';
 	else if(Hypotension.checked) {
-		if(Duration>4){page_Fever.style.display = 'block';}
+		if(Duration>240){page_Fever.style.display = 'block';}
 		else {page_Hypotension.style.display = 'block'; page_Fever.style.display = 'block';}
-		}
-	else if(Rash.checked) {
-		if(Duration<=4) page_Hypotension.style.display = 'block';
 	}
+	else if(Rash.checked) {
+		if(Duration<=240) page_Hypotension.style.display = 'block';
+		else {Comment = "Consider Rash from other cause"; page_Result.style.display='block';}
+	}
+	else{alert("Please select at least 1 symptom");}
 	
-	
+	}
 }	
 
 function ShowHypo(){
-	Duration = document.getElementById("Duration").value;
-	if(Duration<1 && Hypotension.checked){lbRecov.style.display = 'block'}
+	Duration = CalDuration();
+	if(Duration<60 && Hypotension.checked){lbRecov.style.display = 'block'}
 	else {
 		lbRecov.style.display = 'none';
-		Recov.checked = false;SatDrop.disabled = false;Recov.disabled = false
+		Recovy.checked=false;Recovn.checked=false;
 	}
 }
 function ShowSat() {
@@ -58,8 +85,16 @@ function ShowSat() {
 		lbSatDrop.style.display = 'block';
 	} else {
 		lbSatDrop.style.display = 'none';
-		SatDrop.checked = false;
+		SatDropy.checked = false;
+		SatDropn.checked = false;
 	}
+}
+
+function DisableCheckbox(checkbox,name) {
+    var checkboxes = document.querySelectorAll('input[name^=' + name + ']');
+	if(checkbox.checked){
+		checkboxes.forEach(checkbox =>{checkbox.checked = false;checkbox.disabled = true;});
+	}else checkboxes.forEach(checkbox =>{checkbox.checked = false;checkbox.disabled = false;});
 }
 
 /************************ FEVER *********************************/
@@ -108,20 +143,21 @@ function CalculateFever() {
 	//count Hemolysis evidence
 	for(var i = 0; i < AHTR.length; i++) if (AHTR[i].checked) AHTRc++;
 	
-	if(AHTRc >= 1 && Duration < 24) { 
+	if(AHTRc >= 1 && Duration < 1440) { 
 		if(Fever_NAHTRy.checked) { Diagnosis = "NiAHTR"; Confidence = "Definite"; }
 		else if(Fever_NAHTRn.checked) {
 			Diagnosis = "iAHTR";
 			if(Fever_ABOy.checked || Fever_DATy.checked) Confidence = "Definite";
 			else Confidence = "Probable";
 		}
-	} else {
-		if(Duration < 4 && Hypotension.checked) {Diagnosis = "TTI if evidence C/S positive";Comment ="Please consider C/S, if positive likely TTI";}
-	else if (Duration < 4) {Diagnosis = "FNHTR or TTI"; Comment ="Please consider C/S, if positive likely TTI";}
+		page_Result.style.display = 'block';
+	} else if(Fever_None.checked){
+		if(Duration < 240 && Hypotension.checked) {Diagnosis = "TTI if evidence C/S positive";Comment ="Please consider C/S, if positive likely TTI";}
+		else if (Duration < 240) {Diagnosis = "FNHTR or TTI"; Comment ="Please consider C/S, if positive likely TTI";}
 		else Diagnosis = "FNHTR & AHTR & TTI are not likely";
-	}
+		page_Result.style.display = 'block';
+	} else alert("please select")
 	
-	page_Result.style.display = 'block';
 	document.getElementById("Diagnosis").innerHTML = Diagnosis;
 	document.getElementById("Confidence").innerHTML = Confidence;
 	document.getElementById("Comment").innerHTML = Comment;
@@ -130,44 +166,23 @@ function CalculateFever() {
 
 /************************* RASH *********************************/
 
-function CalculateRash() {
 
-	var Allergy = document.querySelectorAll('input[name^="Allergic"]');
-	var AllergyC = 0
-	
-	for (var i = 0; i < Allergy.length; i++) {
-		if (Allergy[i].checked && Allergy[i].value == 'yes') {
-			AllergyC++;
-		}
-	}
-
-	if ((AllergyC >= 2) && (Duration <= 2)) {
-		Diagnosis = "Allergic Reaction";
-		Confidence = "Definite";
-	}
-	else if ((AllergyC >= 1) && (Duration <= 4)) {
-		Diagnosis = "Allergic Reaction";
-		Confidence = "Probable";
-	} else {
-		Diagnosis = "Allergic reaction is not likely";
-	}
-	
-	page_Result.style.display = 'block';
-	document.getElementById("Diagnosis").innerHTML = Diagnosis;
-	document.getElementById("Confidence").innerHTML = Confidence;
-
-}
 
 /************************* Dyspnea *********************************/
 
 function CalculateDyspnea() {
+	var TACO = document.querySelectorAll('input[name^="Dys_Q"]');
+	var TACOc = 0
+	Duration = CalDuration();
+	for(var i = 0; i < TACO.length; i++) if (TACO[i].checked) TACOc++;
 	
-	if(Dys_Q1.checked && Duration < 12) {
-		if(Dys_Q2.checked || Dys_Q3.checked) {Diagnosis="TACO"}
-		else{Diagnosis="TRALI"}
-	}
-	else if(Duration < 24) {Diagnosis = "TAD"}
-	else{Diagnosis="Others"}
+	if(TACOc>=2) {
+		if(Duration<=720) Diagnosis="TACO";	
+		else Diagnosis= "Overload from other cause";
+	} else if(Dys_Q2.checked & Dys_Sat.checked){
+		if(Duration<=720) Diagnosis="TRALI";	
+		else Diagnosis= "Lung inkury from other cause";
+	} else Diagnosis="TAD";
 	
 	if(Dys_Sev1.checked){Severity="Non-Severe"}
 	else if(Dys_Sev2.checked){Severity="Severe"}
@@ -199,30 +214,50 @@ function ShowSkin() {
 
 function CalculateHypo(){
 	var Skinc = 0
+	Duration = CalDuration();
 	for(var i = 0; i < SkinM.length; i++) if (SkinM[i].checked) Skinc++;
 	
-	if(Hypotension.checked){
-		if(Skinc>=1 && Duration<=2){Diagnosis = "Anaphylaxis"; Confidence="Definite";}
-		else if(Skinc>=1 && Duration>2){Diagnosis = "Anaphylaxis";Confidence="Possible";}
-		else CalculateFever();
-	}
-	else{
-		if(Skinc>=1 && Duration<=2){Diagnosis = "Allergic reaction"; Confidence="Definite";}
-		else if(Skinc>=1 && Duration>2){Diagnosis = "Allergic reaction"; Confidence="Possible";}
-		else Diagnosis = "Allergic reaction not likely";
-	}
+	if(Skinc>=1){
+		if(Other_Skiny.checked && Duration<=120) Confidence="Probable";
+		else if(Other_Skinn.checked && Duration<=120) Confidence="Definite";
+		else if(Duration>120) Confidence="Possible";
+		else alert("Pleaase select")
+		
+		if(Hypotension.checked) Diagnosis = "Anaphylaxis";
+		else Diagnosis = "Allergic reaction";
+		
+	} else {
+		if (Hypotension.checked)	CalculateFever();
+		else {Diagnosis = "Allergic reaction not likely"; Confidence="";}
+		}
+
 	page_Result.style.display = 'block';
 	document.getElementById("Diagnosis").innerHTML = Diagnosis;
 	document.getElementById("Confidence").innerHTML = Confidence;
 }
 
+function CalculateHTR(){
+	Duration = CalDuration();
+	Diagnosis="HTR";
+	var OTH = document.querySelectorAll('input[name^="Other_HTR"]').value;
+	if(Other_HTRy.checked) {Confidence="Possible";}
+	else if(Other_HTRn.checked){
+		if(Duration<=15) Confidence="Definite";
+		else Confidence = "Probable";
+	}
+	else alert("Please select");
+	
+	page_Result.style.display = 'block';
+	document.getElementById("Diagnosis").innerHTML = Diagnosis;
+	document.getElementById("Confidence").innerHTML = Confidence;
+	document.getElementById("Comment").innerHTML = Severity;
+}
 /*****************************************************************/
 
 
 function PageReset() {
 	page_Fever.style.display   = 'none';
 	page_Dyspnea.style.display = 'none';
-	page_Rash.style.display    = 'none';
 	page_Hypotension.style.display = 'none';
 	page_Result.style.display  = 'none';
 	document.getElementById("Comment").innerHTML = "";
