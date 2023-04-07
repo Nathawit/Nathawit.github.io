@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 <head>
 	<base target="_top">
 	<meta charset="utf-8">
@@ -23,15 +22,19 @@
 
 <body>
   
-	<h1>Transfusion</h1>
+	<!------------------------------- First Page General -------------------------------------->  
+
+	<h1>Transfusion++</h1>
 
 	<form id="MyForm" onsubmit="addData()">
 
 	Patient First name
-	<input type="text" id="fname" name="fname" placeholder="First name" required >
+	<input type="text" id="fname" name="fname" placeholder="First name" >
 	Patient Last name
-	<input type="text" id="lname" name="lname" placeholder="Last name" required >
+	<input type="text" id="lname" name="lname" placeholder="Last name" >
 	Hospital
+	<input type="text" id="HN" name="HN" placeholder="HosNumber" required >
+	Hospital Number
 	<select name="Hospital" id="Hospital">
 		<option value="KCMH">KCMH</option>
 		<option value="SIRIRAJ">SIRIRAJ</option>
@@ -45,61 +48,154 @@
 		<option value="O">O</option>
 		<option value="AB">AB</option>
 	</select>
+  Blood Component
+  <select name="BlComp" id="BlComp">
+		<option value="PRC">PRC</option>
+		<option value="LPRC">LPRC</option>
+		<option value="LDPRC">LDPRC</option>
+		<option value="SDR">SDR</option>
+		<option value="PC">PC</option>
+		<option value="LPPC">LPPC</option>
+		<option value="LDPPC">LDPPC</option>
+		<option value="SDP">LSDP</option>
+		<option value="FFP">FFP</option>
+		<option value="Cryo">Cryo</option>
+	</select>
 	Transfusion Datetime
 	<input type="datetime-local" id="Transdate" name="Transdate" required >
 	Onset of Symptoms
-	<input id="Onset" name="Onset" type="datetime-local" required><br>
+	<input id="Onsetdate" name="Onsetdate" type="datetime-local" required><br>
 	Patient Symptoms
-	<fieldset>
-		<label><input type="checkbox" id="Fever" name="Fever">Fever</label>
-		<label><input type="checkbox" id="Dyspnea" name="Dyspnea">Dyspnea</label>
-		<label id="lbSatDrop" style="display:none;">&emsp;&emsp;
-			SpO2 lower than 90%
-			<input type="radio" id="SatDropy" name="SatDrop" value="yes">yes
-			<input type="radio" id="SatDropn" name="SatDrop" value="no">no</label>
-		<label><input type="checkbox" id="Rash" name="Rash">Rash</label>
-		<label><input type="checkbox" id="Hypotension" name="Hypotension">Hypotension</label>
-		<label id="lbRecov" style="display:none;">&emsp;&emsp;
-			Elevate BP after cessation and IV fluid
-			<input type="radio" id="Recovy" name="Recov" value="yes">yes
-			<input type="radio" id="Recovn" name="Recov" value="no">no</label>
-		
-	</fieldset>
-	<button type="button" id="Approach">Approach</button>
-
-	<div id="page_Hypotension" style="display:none;">
-		<h2>Skin & Mucosal involvement</h2>
-		<fieldset id="Hypo_Skin">
-			<label><input type="checkbox" id="Hypo_Skin2" name="Hypo_Skin2">Conjunctival edema</label>
-			<label><input type="checkbox" id="Hypo_Skin3" name="Hypo_Skin3">Lips,Tongue,uvula edema</label>
-			<label><input type="checkbox" id="Hypo_Skin4" name="Hypo_Skin4">Angioedema</label>
-			<label><input type="checkbox" id="Hypo_Skin5" name="Hypo_Skin5">Urticaria</label>
-			<label><input type="checkbox" id="Hypo_Skin6" name="Hypo_Skin6">Bronchospasm</label>
-			<label><input type="checkbox" id="Hypo_None" name="Hypo_None">None of Above</label>
-		</fieldset>
-		Evidence of Environment,Drug,Dietary
-		<input type="radio" id="Other_Skiny" name="Other_Skin">yes
-		<input type="radio" id="Other_Skinn" name="Other_Skin">no
-		
-		<button type="button" id="CalculateHypo">Calculate Hypotension</button>
-	</div>
-
-	<div id="page_Fever" style="display:none;">
-		<h2>Evidence of Hemolysis</h2>
-		Because of Fever, Patient's possible disease include: FNHTR, AHTR, TTI.<br>
-		
-		<div id="page_Hemolysis" >
-			
+	<fieldset><table>
+		<tr><td><label><input type="checkbox" id="S_Fever" >Fever/Chills</label></td>
+			<td>Body temperature &#8805; 38C or increase &#8805; 1C from baseline</td></tr>
+		<tr><td><label><input type="checkbox" id="S_Dys" >Dyspnea</label>
+			<td>New onset or significant worsening of shortness of breath or increase in respiratory rate</td></tr>
+		<tr><td><label><input type="checkbox" id="S_Rash">Skin & Mucosal</label></td>
+			<td>Symptoms involve skin & mucosa: Rash, Itching, Angioedema</td></tr>
+		<tr><td><label><input type="checkbox" id="S_Hypo" >Hypotension</label></td>
+			<td>Adult: SBP drop &#8805; 30 mmHg and SBP &#8804; 80 mmHg </tr><tr>
+			<td></td><td>Infants, children and adolescents: SBP drop &#8805; 25% Baseline</td></tr>
+	</table></fieldset>
+	<button type="button" id="Approach">Next</button>
+	
+	<!------------------------------- MAIN 1 : Diagnosis -------------------------------------->  
+	
+	<div id="page_Dys" style="display:none;">
+		<h2>Pulmonary Complication</h2>
+		<b>Physical Exam </b>
 		<fieldset>
-			<label><input type="checkbox" id="Fever_AHTR2" name="Fever_AHTR2">Hemoglobinuria</label>
-			<label><input type="checkbox" id="Fever_AHTR3" name="Fever_AHTR3">Elevated Direct bilirubin</label>
-			<label><input type="checkbox" id="Fever_AHTR4" name="Fever_AHTR4">Elevated LDH</label>
-			<label><input type="checkbox" id="Fever_AHTR5" name="Fever_AHTR5">Decrease Fibrinogen</label>
-			<label><input type="checkbox" id="Fever_AHTR6" name="Fever_AHTR6">Decrease Haptoglobin</label>
-			<label><input type="checkbox" id="Fever_None" name="Fever_None">None of Above</label>
+			<label><input type="radio" id="Dys_PE1" name="Dys_PE">Wheezing/Stridor/Bronchospasm</label>
+			<label><input type="radio" id="Dys_PE2" name="Dys_PE">Crepitation/Crackles</label>
+			<label><input type="radio" id="Dys_PE3" name="Dys_PE">Clear breath sound/Not sure</label>
 		</fieldset>
+		<b>Evidence of Volume overload </b>
+		<fieldset>
+			<label><input type="checkbox" id="Dys_QSat" >O2 saturation &#8804; 90%</label>
+			<label><input type="checkbox" id="Dys_QTACO2" >X-ray show bilateral infiltrates</label>
+			<label><input type="checkbox" id="Dys_QTACO3" >Positive Fluid Balance &#8805; 1000 ml/day</label>
+			<label><input type="checkbox" id="Dys_QTACO4" >Elevate NT-proBNP &#8805; 1,000 pg/ml</label>
+			<label><input type="checkbox" id="Dys_QTACO5" >Cadiovascular change</label> 
+			ANY of Elevated CVP, Hypertension, widened pulse pressurejugular venous distension, Peripheral edema
+			<label><input type="checkbox" id="Dys_None" >None of Above</label>
+		</fieldset>
+			<button type="button" id="Cal_Dys">Next</button>
+	</div>
+	
+	<div id="page_Hemoly" style="display:none;">
+		<h2>Evidence of Hemolysis</h2>
+		<fieldset>
+			<label><input type="checkbox" id="Hemoly_AHTR2" >Hemoglobinuria</label>
+			<label><input type="checkbox" id="Hemoly_AHTR3" >Elevated Direct bilirubin</label>
+			<label><input type="checkbox" id="Hemoly_AHTR4" >Elevated LDH</label>
+			<label><input type="checkbox" id="Hemoly_AHTR5" >Decrease Fibrinogen</label>
+			<label><input type="checkbox" id="Hemoly_AHTR6" >Decrease Haptoglobin</label>
+			<label><input type="checkbox" id="Hemoly_None" >None of Above</label>
+		</fieldset>
+		<button type="button" id="Cal_Hemoly">Next</button>
+	</div>
+		
+	<div id="page_Cult" style="display:none;">
+		<h2>Evidence of infection</h2>
+		<b>Laboratory evidence of a pathogen in the transfusion recipient</b>
+		<fieldset>
+			<label><input type="checkbox" id="Cult_1">Evidence of the pathogen in the transfused component</label>
+			<label><input type="checkbox" id="Cult_2">Evidence of the pathogen in the donor at the time of donation</label>
+			<label><input type="checkbox" id="Cult_3">Evidence of the pathogen in an additional component from the same donation</label>
+			<label><input type="checkbox" id="Cult_4">Evidence of the pathogen in an additional recipient of a component from the same donation</label>
+			<label><input type="checkbox" id="CultNone">None of Above</label>
+		</fieldset>
+		<fieldset id ="page_HTR" style="display:none;">
+			Elevate BP after stop transfusion and IV fluid loading ?
+			<label><input type="radio" id="HTR_1" name="Rad_HTR">Yes and response within 10 minutes
+			<label><input type="radio" id="HTR_2" name="Rad_HTR">Yes but not response within 10 minutes
+			<label><input type="radio" id="HTR_3" name="Rad_HTR">No
+		</fieldset>
+		<button type="button" id="Cal_Cult">Next</button>
+	</div>
+	
+	<div id="page_Aller" style="display:none;">
+		<h2>Allergic and Anaphylaxis</h2>
+		<b>Skin and Mucosal symptoms</b>
+		<fieldset>
+			<label><input type="checkbox" id="Aller_Skin2" >Conjunctival edema</label>
+			<label><input type="checkbox" id="Aller_Skin3" >Edema od Lips,Tongue, uvula, periorbital</label>
+			<label><input type="checkbox" id="Aller_Skin4" >Angioedema</label>
+			<label><input type="checkbox" id="Aller_Skin5" >Urticaria</label>
+			<label><input type="checkbox" id="Aller_Skin6" >Maculopapular rash</label>
+			<label><input type="checkbox" id="Aller_Skin7" >Pruritus (itching)</label>
+			<label><input type="checkbox" id="Aller_Dys" disabled="disabled">Wheezing/Stridor/Bronchospasm</label>
+			<label><input type="checkbox" id="Aller_Hypo" disabled="disabled">Hypotension</label>
+		</fieldset>
+		<button type="button" id="Cal_Aller">Next</button>
+	</div>
+	
+	<!------------------------------- MAIN 2 : IMPUT & Severity -------------------------------------->  
+	
+	<div id="page_Imput" style="display:none;">
+		<h2>Severity</h2>
+		<fieldset>
+			<label><input type="radio" id="Sev1" name="Sev">Recover by Medication only</label>
+			<label><input type="radio" id="Sev2" name="Sev">Not Recover by Medication, hospitalization, prolong hospitalization</label>
+			<label><input type="radio" id="Sev3" name="Sev">Life Threatening AND Need Intervention: ETT, Vasopressor</label>
+		</fieldset>
+		
+		<h2>Imputability</h2>
+		<fieldset id = "ImputGen" style="display:none;">
+			<label><input type="radio" id="ImputGen1" name="Imput" value="D">Patient has no other conditions that could explain symptoms</label>
+			<label><input type="radio" id="ImputGen2" name="Imput" value="Pr">other potential causes that could explain symptoms, but transfusion is the most likely cause</label>
+			<label><input type="radio" id="ImputGen3" name="Imput" value="Po">Other present causes are most likely, but transfusion cannot be ruled out</label>
+		</fieldset>
+		<fieldset id = "ImputTRALI" style="display:none;">
+			<label><input type="radio" id="ImputTRALI1" name="Imput" value="D">There are no alternative factors</label>
+			<label><input type="radio" id="ImputTRALI2" name="Imput" value="Pr">There is other evidence Lung injury</label>
+			<b>Direct Lung Injury</b><br> 
+			• Aspiration • Pneumonia • Toxic inhalation • Lung contusion • Near drowning <br>
+			<b>Indirect Lung Injury </b><br>
+			• Severe sepsis • Shock • Multiple trauma • Burn injury • Acute pancreatitis • Cardiopulmonary bypass • Drug overdose</br>
+		</fieldset>
+		<fieldset id = "ImputTACO" style="display:none;">
+			<label><input type="radio" id="ImputTACO1" name="Imput" value="D">There are no explaination for overload</label>
+			<label><input type="radio" id="ImputTACO2" name="Imput" value="Pr">patient recieve other fluid OR has hx cardiac insuff but not explain</label>
+			<label><input type="radio" id="ImputTACO3" name="Imput" value="Po">patient has hx cardiac insuff that likely explain</label>
+		</fieldset>
+		<fieldset id="ImputHTR"  style="display:none;">
+			Other possible could explain hypotension: xxxx Example xxxx
+			</label><input type="radio" id="ImputHTR1" name="Imput" value="D">yes</label>
+			</label><input type="radio" id="ImputHTR2" name="Imput" value="Pr">no</label>
+		</fieldset>
+		<fieldset id="ImputTTI" style="display:none;">
+			<label><input type="checkbox" id="TTI1" name="TTI1" >No other potential exposures to the pathogen could be identified in the recipient</label>
+			<label><input type="checkbox" id="TTI2" name="TTI2" >Evidence that the recipient was not infected with the pathogen prior to transfusion</label>
+		</fieldset>
+		<fieldset id="ImputAller" style="display:none;">
+			<label><input type="radio" id="Other_Skiny" name="Imput" value="D">No other evidence of environmental, drug or dietary risks</label>
+			<label><input type="radio" id="Other_Skinn" name="Imput" value="Pr">There are other potential causes present that could explain symptoms, but transfusion is the most likely cause</label>
+			<label><input type="radio" id="Other_Skinn" name="Imput" value="Po">Other present causes are most likely, but transfusion cannot be ruled out</label>
+		</fieldset>
+		<fieldset>
 			<table id="lbFever_NAHTR" style="display:none;"><tr>
-				<td>&emsp;Evidence of Thermal,Chemical,Mechanical</td>
+				<td>&emsp;Evidence of Physical cause: Thermal,Chemical,Mechanical,Osmotic</td>
 				<td><input type="radio" id="Fever_NAHTRy" name="Fever_NAHTR" value ="yes">Yes</td>
 				<td><input type="radio" id="Fever_NAHTRn" name="Fever_NAHTR" value ="no">No</td>
 			</tr></table>
@@ -109,65 +205,35 @@
 				<td><input type="radio" id="Fever_ABOn" name="Fever_ABO" value ="no">No</td>
 			</tr></table>
 			<table id="lbFever_DAT" style="display:none;"><tr>
-				<td>&emsp;DAT</td>
+				<td>&emsp;Positive direct antiglobulin test DAT</td>
 				<td><input type="radio" id="Fever_DATy" name="Fever_DAT" value ="yes">Positive</td>
 				<td><input type="radio" id="Fever_DATn" name="Fever_DAT" value ="no">Negative or Not Done</td>
 			</tr></table>
-		</div>
-		
-		<p><br></p>
-		<button type="button" id="CalculateFever">Calculate</button>
-	</div>
-		
-	<div id="page_HTR"  style="display:none;">
-	Other possible could explain hypotension: xxxx
-	<input type="radio" id="Other_HTRy" name="Other_HTR" value="yes">yes
-	<input type="radio" id="Other_HTRn" name="Other_HTR" value="no">no
-	<button type="button" id="CalculateHTR">Calculate</button>
-	</div>
-
-	<div id="page_Dyspnea" style="display:none;">
-			<h1>Dyspnea</h1>
-			<p>Because of Dyspnea, Patient's possible disease include: TACO, TRALI, TAD.<br><br></p>
-			
-		<fieldset>
-			<label><input type="checkbox" id="Dys_Sat" name="Dys_Sat">O2 sat lower than 90%</label>
-			<label><input type="checkbox" id="Dys_Q2" name="Dys_Q2">Abnormal Xray, Bilat infiltrate</label>
-			<label><input type="checkbox" id="Dys_Q3" name="Dys_Q3">Positive Fluid Balance > 1000 ml/day</label>
-			<label><input type="checkbox" id="Dys_Q4" name="Dys_Q4">Elevate NT-proBNP</label>
-			<label><input type="checkbox" id="Dys_Q5" name="Dys_Q5">Elevate CVP</label>
-			<label><input type="checkbox" id="Dys_Q6" name="Dys_Q6">Lt.Heart Failure Symptoms</label>
-			Blood Pressure
-			<input type="radio" id="Dys_BPh" name="Dys_BP">Higher
-			<input type="radio" id="Dys_BPl" name="Dys_BP">Lower
 		</fieldset>
-		<p><br></p>
-		Severity
-		<fieldset>
-			<label><input type="radio" id="Dys_Sev1" name="Dys_Sev">Recover by Medication only</label>
-			<label><input type="radio" id="Dys_Sev2" name="Dys_Sev">Not Recover by Medication only</label>
-			<label><input type="radio" id="Dys_Sev3" name="Dys_Sev">Not Recover by Medication only AND ETT needed</label>
-		</fieldset>
-			<button type="button" id="CalculateDyspnea">Calculate</button>
-		</div>
 		
+		
+		<button type="button" id="Cal_Imput">Next</button>
+	</div>	
+	
 	<div id="page_Result" style="display:none;">
 			<h2>Result</h2>
 			<fieldset>
-			Mostlikely Diagnosis = <p id="Diagnosis"></p>
-			Confidence = <p id="Confidence"></p>
-			Comment = <p id="Comment"></p>
+			<table><tr>
+				<tr><td>Mostlikely Diagnosis</td><td id="Diagnosis"></td></tr>
+				<tr><td>Imputability</td>   <td id="Imputability"></td></tr>
+				<tr><td>Severity</td>       <td id="Severity"></td></tr>
+				<tr><td>Comment</td>        <td id="Comment"></td></tr>
+			</table>
 			</fieldset>
 	
 			<input type="submit" value="Submit">
-			<button type="button" id="Reset">Reset</button>
-		</div>
+			
+	</div>
+	<button type="button" id="btnReset">Reset</button>
 	</form>
 	
 	
-
-
-<script src="App2.js"></script>
+<script src="TransfusionPlus.js"></script>
 
 </body>
 </html>
